@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-static CGFloat const kCSNotificationViewHeight = 50.0f;
-static CGFloat const kCSNotificationViewSymbolViewSidelength = 44.0f;
+static CGFloat const kCSNotificationViewHeight = 30.0f;
+static CGFloat const kCSNotificationViewSymbolViewSidelength = 24.0f;
 static NSTimeInterval const kCSNotificationViewDefaultShowDuration = 2.0;
 
 typedef NS_ENUM(NSInteger, CSNotificationViewStyle) {
