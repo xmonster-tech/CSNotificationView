@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-static CGFloat const kCSNotificationViewHeight = 30.0f;
-static CGFloat const kCSNotificationViewSymbolViewSidelength = 24.0f;
+static CGFloat kCSNotificationViewHeight = 30.0f;
+static CGFloat kCSNotificationViewSymbolViewSidelength = 24.0f;
 static NSTimeInterval const kCSNotificationViewDefaultShowDuration = 2.0;
 
 typedef NS_ENUM(NSInteger, CSNotificationViewStyle) {
@@ -46,7 +46,8 @@ typedef void(^CSVoidBlock)();
 + (CSNotificationView*)notificationViewWithParentViewController:(UIViewController*)viewController
                                                       tintColor:(UIColor*)tintColor
                                                           image:(UIImage*)image
-                                                        message:(NSString*)message;
+                                                        message:(NSString*)message
+                                                           font:(UIFont *)font;
 
 #pragma mark + icons
 

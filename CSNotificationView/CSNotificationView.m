@@ -87,6 +87,7 @@
                                                       tintColor:(UIColor*)tintColor
                                                           image:(UIImage*)image
                                                         message:(NSString*)message
+                                                           font:(UIFont *)font
 {
     NSParameterAssert(viewController);
     
@@ -94,8 +95,25 @@
     note.tintColor = tintColor;
     note.image = image;
     note.textLabel.text = message;
+    note.textLabel.font = font;
+    
+    CGFloat screewidth = [[UIScreen mainScreen] bounds].size.width;
+    CGFloat height = [self heightOfTextForString:message andFont:note.textLabel.font maxSize:CGSizeMake(screewidth - 15, 34)];
+    NSInteger numberOfLines = height / note.textLabel.font.pointSize;
+    kCSNotificationViewHeight = 12 + height;
     
     return note;
+}
+
++ (CGFloat)heightOfTextForString:(NSString *)aString andFont:(UIFont *)aFont maxSize:(CGSize)aSize {
+    NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
+    paragraph.lineBreakMode = NSLineBreakByTruncatingTail;
+    CGSize sizeOfText = [aString boundingRectWithSize: aSize
+                                              options: (NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                           attributes: [NSDictionary dictionaryWithObjectsAndKeys:aFont, NSFontAttributeName/*, paragraph, NSParagraphStyleAttributeName*/, nil]
+                                              context: nil].size;
+    
+    return ceilf(sizeOfText.height);
 }
 
 #pragma mark - lifecycle
@@ -162,12 +180,13 @@
                 _textLabel.translatesAutoresizingMaskIntoConstraints = NO;
             
                 _textLabel.numberOfLines = 2;
-                _textLabel.minimumScaleFactor = 0.6;
+//                _textLabel.minimumScaleFactor = 0.6;
                 _textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
                 
-                UIFontDescriptor* textLabelFontDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
-                _textLabel.font = [UIFont fontWithDescriptor:textLabelFontDescriptor size:17.0f];
-                _textLabel.adjustsFontSizeToFitWidth = YES;
+//                UIFontDescriptor* textLabelFontDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
+//                _textLabel.font = [UIFont fontWithDescriptor:textLabelFontDescriptor size:17.0f];
+                _textLabel.font = [UIFont systemFontOfSize:14];
+//                _textLabel.adjustsFontSizeToFitWidth = YES;
                 
                 [self addSubview:_textLabel];
             }
@@ -281,12 +300,20 @@
                          multiplier:1.0f constant:-3]];
     
     [self addConstraint:[NSLayoutConstraint
-        constraintWithItem:_textLabel
-                 attribute:NSLayoutAttributeCenterY
-                 relatedBy:NSLayoutRelationEqual
-                    toItem:_symbolView
-                 attribute:NSLayoutAttributeCenterY
-                multiplier:1.0f constant:0]];
+                constraintWithItem:_textLabel
+                         attribute:NSLayoutAttributeBottom
+                         relatedBy:NSLayoutRelationEqual
+                            toItem:self
+                         attribute:NSLayoutAttributeBottom
+                         multiplier:1.0f constant:-6]];
+    
+//    [self addConstraint:[NSLayoutConstraint
+//        constraintWithItem:_textLabel
+//                 attribute:NSLayoutAttributeCenterY
+//                 relatedBy:NSLayoutRelationEqual
+//                    toItem:_symbolView
+//                 attribute:NSLayoutAttributeCenterY
+//                multiplier:1.0f constant:0]];
     
     [super updateConstraints];
 }
